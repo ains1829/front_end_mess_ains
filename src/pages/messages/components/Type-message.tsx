@@ -11,7 +11,7 @@ function TypeMessage() {
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
       <div>
-        <div className="bg-gray-800 text-white w-full max-w-md  p-3 rounded-lg text-sm">
+        <div className="bg-gray-400 text-white w-full max-w-md  p-3 rounded-xl text-sm">
           Lorem ipsum dolor sit amet consectetur, adipisicin Lorem ipsum dolor,
           sit amet consectetur adipisicing elit. Reiciendis, adipisci placeat
           sit explicabo, dicta ab repudiandae saepe vitae tempore dolor vero

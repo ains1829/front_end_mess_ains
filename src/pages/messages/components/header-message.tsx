@@ -1,18 +1,21 @@
+import { User } from "@/types/messages/user-type-message";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Phone, Video } from "lucide-react";
 
-function HeaderMessage() {
+function HeaderMessage({ user }: { user: User | undefined }) {
   return (
-    <div className="flex bg-white p-3 justify-between items-center">
+    <div className="flex bg-white p-3 justify-between items-center shadow-md">
       <div className="flex space-x-2 items-center">
         <Avatar>
           <AvatarImage
-            className="rounded-full w-[25px]"
-            src="https://github.com/shadcn.png"
+            className="rounded-full w-[40px] h-[40px]"
+            src={`/images/profil/${user?.photo_user}`}
           />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
-        <span>Jean Dupont</span>
+        <span>
+          {user?.first_name} {user?.name_user}
+        </span>
       </div>
       <div className="flex space-x-4">
         <Phone size={19} />

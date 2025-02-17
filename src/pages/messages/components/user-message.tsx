@@ -1,8 +1,17 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { User } from "@/types/messages/user-type-message";
-function Usermessage({ user }: { user: User }) {
+function Usermessage({
+  user,
+  user_message_clicked,
+}: {
+  user: User;
+  user_message_clicked: (user: User) => void;
+}) {
   return (
-    <div className="p-3 bg-white flex items-center space-x-3 cursor-pointer hover:bg-gray-50">
+    <div
+      onClick={() => user_message_clicked(user)}
+      className="p-3 bg-white flex items-center space-x-3 cursor-pointer hover:bg-gray-50"
+    >
       <Avatar className="h-10 w-10">
         <AvatarImage
           className="rounded-full bg-red-500 h-full w-full"
