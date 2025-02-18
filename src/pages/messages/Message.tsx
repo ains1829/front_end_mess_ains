@@ -36,7 +36,7 @@ function Message() {
         ) : (
           <>
             <HeaderMessage user={message_user} />
-            <ContentMessage />
+            <ContentMessage user={message_user} />
           </>
         )}
       </div>
