@@ -3,5 +3,5 @@ export interface User {
   name_user: string;
   first_name: string;
   birthday: Date;
-  photo_user: Text;
+  photo_user: string;
 }

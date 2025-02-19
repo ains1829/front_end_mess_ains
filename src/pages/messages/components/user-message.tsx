@@ -14,7 +14,7 @@ function Usermessage({
     >
       <Avatar className="h-10 w-10">
         <AvatarImage
-          className="rounded-full bg-red-500 h-full w-full"
+          className="rounded-full bg-red-500 h-full w-full object-cover brightness-100"
           src={`/images/profil/${user.photo_user}`}
           alt="..."
         />

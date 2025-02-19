@@ -7,7 +7,7 @@ function NoMessage({ user }: { user: User }) {
     <div className="flex flex-col justify-center mt-auto mb-auto items-center">
       <Avatar>
         <AvatarImage
-          className="rounded-full w-[80px] h-[80px]"
+          className="rounded-full w-[80px] h-[80px] object-cover"
           src={`/images/profil/${user.photo_user}`}
         />
         <AvatarFallback>CN</AvatarFallback>

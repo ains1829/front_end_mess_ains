@@ -8,7 +8,7 @@ function HeaderMessage({ user }: { user: User | undefined }) {
       <div className="flex space-x-2 items-center">
         <Avatar>
           <AvatarImage
-            className="rounded-full w-[40px] h-[40px]"
+            className="rounded-full w-[40px] h-[40px] object-cover"
             src={`/images/profil/${user?.photo_user}`}
           />
           <AvatarFallback>CN</AvatarFallback>
