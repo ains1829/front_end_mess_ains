@@ -4,7 +4,7 @@ function MyMessage({ message }: { message: ContentTypeMessage }) {
   return (
     <div className="flex justify-end">
       <div className="flex justify-end">
-        <div className="flex flex-col bg-gray-800 text-white w-full max-w-md rounded-xl p-2 text-xs">
+        <div className="flex flex-col bg-slate-700 text-white w-full max-w-md rounded-xl p-2 text-xs">
           <span>{message.message}</span>
         </div>
       </div>

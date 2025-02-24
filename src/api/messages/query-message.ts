@@ -1,43 +1,19 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import instanceAxios from "../axios-config";
 import { ContentTypeMessage } from "@/types/messages/content-type-message";
 
 async function sendMessage(message: ContentTypeMessage) {
   try {
-    const reponse = (await instanceAxios.post("/message/send_message", message))
-      .data;
-    return reponse;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export function useSendMessage() {
-  const queryclient = useQueryClient();
-  return useMutation({
-    mutationFn: (message: ContentTypeMessage) => sendMessage(message),
-    onError: (error) => {
-      // An error happened!
-      console.log(`${error}`);
-    },
-    onSuccess: () => {
-      // Boom baby!
-    },
-    onSettled: (data, error, variable) => {
-      // Error or success... doesn't matter!
-      queryclient.invalidateQueries({
-        queryKey: ["message", variable.iduser_send, variable.iduser_receive],
-      });
-    },
-  });
-}
-
-async function getMessages(iduser_send: number, iduser_receive: number) {
-  try {
     const reponse = (
-      await instanceAxios.get(
-        `/message/my_message?idconnected=${iduser_send}&iduserclicked=${iduser_receive}`
-      )
+      await instanceAxios.post("/message/send_message", message, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("auth-token")}`,
+        },
+      })
     ).data;
     return reponse;
   } catch (error) {
@@ -45,10 +21,62 @@ async function getMessages(iduser_send: number, iduser_receive: number) {
   }
 }
 
-export function usegetMessages(iduser_send: number, iduser_receive: number) {
-  return useQuery({
-    queryKey: ["message", iduser_send, iduser_receive],
-    queryFn: () => getMessages(iduser_send, iduser_receive),
+export function useSendMessage() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (message: ContentTypeMessage) => sendMessage(message),
+    onMutate: async (newMessage) => {
+      queryClient.setQueryData(
+        ["message", newMessage.iduser_receive],
+        (oldData: any) => {
+          const newData = {
+            ...oldData,
+            pages: oldData.pages.map((page: any) => ({
+              ...page,
+              messages: [newMessage, ...page.data],
+            })),
+          };
+          return newData;
+        }
+      );
+    },
+    onError: (error) => {},
+    onSuccess: () => {},
+    onSettled: (data, error, variable) => {
+      queryClient.invalidateQueries({
+        queryKey: ["message", variable.iduser_receive],
+      });
+    },
+  });
+}
+async function getMessages(iduser_receive: number, pageParam: number) {
+  try {
+    const reponse = (
+      await instanceAxios.get(`/message/my_message`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("auth-token")}`,
+        },
+        params: {
+          iduserclicked: iduser_receive,
+          page: pageParam,
+        },
+      })
+    ).data;
+    console.log(reponse);
+    return reponse;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function usegetMessages(iduserclicked: number) {
+  return useInfiniteQuery({
+    queryKey: ["message", iduserclicked],
+    queryFn: ({ pageParam }) => getMessages(iduserclicked, pageParam),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      return lastPage.hasNextPage ? lastPage.page + 20 : undefined;
+    },
     staleTime: Infinity,
     gcTime: 1000 * 60 * 15,
     refetchOnWindowFocus: false,
