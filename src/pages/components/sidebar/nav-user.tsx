@@ -1,5 +1,4 @@
 "use client";
-import image_user from "@/assets/images/profil/boy-6281260_640.jpg";
 import {
   BadgeCheck,
   Bell,
@@ -27,10 +26,16 @@ import {
 } from "@/components/ui/sidebar";
 import { useContext } from "react";
 import { UserContext } from "@/types/messages/user-type-message";
+import { useNavigate } from "react-router";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
   const user_connected = useContext(UserContext);
+  const navigate = useNavigate();
+  const logout = () => {
+    navigate("/");
+    localStorage.removeItem("auth-token");
+  };
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -106,7 +111,7 @@ export function NavUser() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={logout}>
               <LogOut size={14} />
               Log out
             </DropdownMenuItem>
